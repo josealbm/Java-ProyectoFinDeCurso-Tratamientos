@@ -5,11 +5,13 @@
  */
 package tratamiento;
 
+import java.util.Scanner;
+
 /**
  *
  * @author josealberto
  */
-public abstract class Tratamiento{
+public class Tratamiento{
     protected String nombre;
     protected String descripcion;
     protected int referencia;
@@ -58,9 +60,26 @@ public abstract class Tratamiento{
         this.precioventa = precioventa;
     }
     
-    public abstract void mostrarTratamiento();
+    public void mostrarTratamiento(){
+        System.out.println("Nombre del producto: "+ this.nombre);
+        System.out.println("Referencia: "+ this.referencia);
+        System.out.println("Descripción: "+ this.descripcion);
+        System.out.println("Precio de venta al público: " + this.precioventa);
+    }
     
-    public abstract void introducirTratamiento();
+    public void introducirTratamiento(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Vamos a dar de alta un tratamiento facial nuevo");
+        System.out.println("Dime el nombre del producto a introducir: ");
+        setNombre(sc.nextLine());
+        System.out.println("Dime la referencia/código EAN del producto:");
+        setReferencia(sc.nextInt());
+        System.out.println("Dime una descripción corta del producto");
+        setDescripcion(sc.nextLine());
+        System.out.println("Y para finalizar, danos el PVP");
+        setPrecioventa(sc.nextDouble());
+        System.out.println("El nuevo producto ha sido agregado, muchas gracias");
+    }
     
 }
     

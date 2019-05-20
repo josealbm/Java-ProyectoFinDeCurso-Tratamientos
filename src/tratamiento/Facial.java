@@ -30,31 +30,26 @@ public class Facial extends Tratamiento{
         this.ingrediente_principal = ingrediente_principal;
     }     
 
+    /**
+     * Método para mostrarnos los atributos del objeto
+     */
     @Override
     public void mostrarTratamiento() {
-        System.out.println("Referencia: "+ this.referencia);
-        System.out.println("Descripción: "+ this.descripcion);
+        super.mostrarTratamiento();
         System.out.println("Ingrediente principal: "+ this.ingrediente_principal);
-        System.out.println("Precio de venta al público: " + this.precioventa);
     }
 
+    /**
+     * Método para dar de alta por el usuario un nuevo tratamiento 
+     */
     @Override
     public void introducirTratamiento() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Vamos a dar de alta un tratamiento facial nuevo");
-        System.out.println("Dime la referencia/código EAN del producto:");
-        setReferencia(sc.nextInt());
-        System.out.println("Cuál es el nombre del producto");
-        setNombre(sc.nextLine());
-        System.out.println("Dime una descripción corta del producto");
-        setDescripcion(sc.nextLine());
+        super.introducirTratamiento();
         System.out.println("¿Cuál es el ingrediente principal?");
         setIngrediente_principal(sc.nextLine());
-        System.out.println("Y para finalizar, danos el PVP");
-        setPrecioventa(sc.nextDouble());
         System.out.println("El nuevo producto ha sido agregado, muchas gracias");
-        
-        
+                
     }
     
     

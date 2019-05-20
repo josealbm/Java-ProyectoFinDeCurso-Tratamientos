@@ -40,8 +40,12 @@ public class Corporal extends Tratamiento{
         this.ingrediente_principal = ingrediente_principal;
     } 
       
+    /**
+     * Método para mostrar los atributos del objeto Corporal
+     */
     @Override
     public void mostrarTratamiento() {
+        System.out.println("Nombre: " + this.nombre);
         System.out.println("Referencia: "+ this.referencia);
         System.out.println("Descripción: "+ this.descripcion);
         System.out.println("Ingrediente principal: "+ this.ingrediente_principal);
@@ -49,22 +53,17 @@ public class Corporal extends Tratamiento{
         System.out.println("Precio de venta al público: " + this.precioventa);
     }
 
+    /**
+     * Método para introducir un tratamiento Corporal nuevo
+     */
     @Override
     public void introducirTratamiento() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Vamos a dar de alta un tratamiento facial nuevo");
-        System.out.println("Dime la referencia/código EAN del producto:");
-        setReferencia(sc.nextInt());
-        System.out.println("Cuál es el nombre del producto");
-        setNombre(sc.nextLine());
-        System.out.println("Dime una descripción corta del producto");
-        setDescripcion(sc.nextLine());
-        System.out.println("¿Cuál es el ingrediente principal?");
-        setIngrediente_principal(sc.nextLine());
+        super.introducirTratamiento();
         System.out.println("¿A qué zona del cuerpo pertenece este tratamiento?");
         setZona_cuerpo(sc.nextLine());
-        System.out.println("Y para finalizar, danos el PVP");
-        setPrecioventa(sc.nextDouble());
+        System.out.println("¿Cuál es el ingrediente principal?");
+        setIngrediente_principal(sc.nextLine());
         System.out.println("El nuevo producto ha sido agregado, muchas gracias");
     }
     
