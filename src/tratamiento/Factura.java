@@ -5,13 +5,10 @@
  */
 package tratamiento;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 
@@ -20,17 +17,36 @@ import java.util.logging.Logger;
  * @author josealberto
  */
 public class Factura {
+    private Integer num_fact; //para poder inicializarlo a null y que la DB se
+                              //encargue de asignarle el número, en lugar de 
+                              //utilizar int, tenemos que utilizar Integer
     private Date fecha;
     private int id_producto;
     private String DNI;
 
-    public Factura(Date fecha, int id_producto, String DNI) {
+    public Factura(Integer num_fact, Date fecha, int id_producto, String DNI) {
+        this.num_fact = null;
         this.fecha = fecha;
         this.id_producto = id_producto;
         this.DNI = DNI;
     }
 
     public Factura() {
+    }
+    
+    public Factura(Factura fact){
+        this.num_fact = fact.num_fact;
+        this.fecha = fact.fecha;
+        this.id_producto = fact.id_producto;
+        this.DNI = fact.DNI;
+    }
+
+    public Integer getNum_fact() {
+        return num_fact;
+    }
+
+    public void setNum_fact(Integer num_fact) {
+        this.num_fact = num_fact;
     }
 
     public Date getFecha() {
@@ -57,14 +73,13 @@ public class Factura {
         this.DNI = DNI;
     }
     
-    public static void generarFactura(String factura){
-        int intCharacter;
-               
+    public static void generarFactura(String factura){  
+        
         try (BufferedWriter fileOutput = new BufferedWriter(new FileWriter(factura))){
             
         
     }   catch (IOException ex) {
-            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error" + ex.getMessage());
         }
     }
 }

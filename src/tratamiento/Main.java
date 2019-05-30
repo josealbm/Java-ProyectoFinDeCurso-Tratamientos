@@ -5,7 +5,13 @@
  */
 package tratamiento;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -73,7 +79,14 @@ public class Main {
                         switch (opcion2){
                             case 1: {
                                 Cliente cust = new Cliente();
-                                cust.altaCliente();
+                            try (Connection con = DriverManager.getConnection
+                ("jdbc:mysql://172.20.10.10:3306/naturness", "alumne", "alualualu")) {
+                                cust.altaCliente(con);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ParseException ex) {
+                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                                 break;
                             }
                             case 2: {

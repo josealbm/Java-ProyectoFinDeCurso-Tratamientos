@@ -12,6 +12,7 @@ import java.util.Scanner;
  * @author josealberto
  */
 public class Tratamiento{
+    protected Integer id;
     protected String nombre;
     protected String descripcion;
     protected int referencia;
