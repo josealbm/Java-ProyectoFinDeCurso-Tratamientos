@@ -8,10 +8,9 @@ package tratamiento;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.ParseException;
+//import java.text.ParseException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static tratamiento.Cliente.buscarCliente;
 
 /**
  *
@@ -26,90 +25,101 @@ public class Main {
         // TODO code application logic here
         Scanner sc = new Scanner(System.in);
         boolean salir = false;
-        while (!salir){    
-            System.out.println("Escoge una opción");
-            System.out.println("1. Gestión de stock");
-            System.out.println("2. Gestión de clientes");
-            System.out.println("3. Venta");
-            System.out.println("4. Salir");
-            int opcion = sc.nextInt();
-            switch(opcion){
-                case(1):{
-                    boolean salir2=false;
-                    while (!salir2){
-                        System.out.println("Escoge una opción");
-                        System.out.println("1. Introducir producto nuevo");
-                        System.out.println("2. Introducir albarán");
-                        System.out.println("3. Mostrar producto");
-                        System.out.println("4. Salir");                                       
-                        int opcion2 = sc.nextInt();
-                        switch (opcion2){
-                            case 1: {
-                                //introducirTratamiento();
-                                break;
-                            }
-                            case 2: {
-                                //introducirAlbaran();
-                                break;
-                            }
-                            case 3: {
-                                //mostrarTratamiento();
-                            }
-                            case 4: {
-                                salir2=true;
-                                break;
+        try (Connection con = DriverManager.getConnection
+          ("jdbc:mysql://192.168.0.32:3306/naturness", "alumne", "alualualu")) {
+            while (!salir){    
+                System.out.println("Escoge una opción");
+                System.out.println("1. Gestión de stock");
+                System.out.println("2. Gestión de clientes");
+                System.out.println("3. Venta");
+                System.out.println("4. Salir");
+                int opcion = sc.nextInt();
+                switch(opcion){
+                    case(1):{
+                        boolean salir2=false;
+                        while (!salir2){
+                            System.out.println("Escoge una opción");
+                            System.out.println("1. Introducir producto nuevo");
+                            System.out.println("2. Introducir albarán");
+                            System.out.println("3. Mostrar producto");
+                            System.out.println("4. Salir");                                       
+                            int opcion2 = sc.nextInt();
+                            switch (opcion2){
+                                case 1: {
+                                    //introducirTratamiento();
+                                    break;
                                 }
-                            default:
-                                System.out.println("Por favor, escoge una opción"
-                                        + "válida");
+                                case 2: {
+                                    //introducirAlbaran();
+                                    break;
+                                }
+                                case 3: {
+                                    //mostrarTratamiento();
+                                }
+                                case 4: {
+                                    salir2=true;
+                                    break;
+                                    }
+                                default:
+                                    System.out.println("Por favor, escoge una opción"
+                                            + "válida");
+                            }
+
                         }
-                        
-                    }
-                    break;
-                }    
-                case 2: {
-                    boolean salir2 = false;
-                    while (!salir2){
-                        System.out.println("Escoge una opción");
-                        System.out.println("1. Dar de alta cliente");
-                        System.out.println("2. Aplicar descuento a clientes");
-                        System.out.println("3. Salir");
-                        int opcion2 = sc.nextInt();
-                        
-                        switch (opcion2){
-                            case 1: {
-                                Cliente cust = new Cliente();
-                            try (Connection con = DriverManager.getConnection
-                ("jdbc:mysql://172.20.10.10:3306/naturness", "alumne", "alualualu")) {
-                                cust.altaCliente(con);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (ParseException ex) {
-                                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                                break;
-                            }
-                            case 2: {
-                                //aplicarDescuento();
-                                break;
-                            }
-                            case 3: {
-                                salir2=true;
-                                break;
+                        break;
+                    }    
+                    case 2: {
+                        boolean salir2 = false;
+                        while (!salir2){
+                            System.out.println("Escoge una opción");
+                            System.out.println("1. Dar de alta cliente");
+                            System.out.println("2. Buscar un cliente por DNI");
+                            System.out.println("3. Buscar un cliente por nº de teléfono");
+                            System.out.println("4. Salir");
+                            int opcion2 = sc.nextInt();
+
+                            switch (opcion2){
+                                case 1: {
+                                    Cliente cust = new Cliente();
+                                    cust.altaCliente(con);
+                                    break;
+                                }
+                                case 2: {
+                                    buscarCliente(con, sc.nextLine());
+                                    break;
+                                }
+                                case 3: {
+                                    buscarCliente(con, sc.nextInt());
+                                    break;
+                                      
+                                }
+                                case 4: {
+                                    salir2=true;
+                                    break;
+                                }
+                                default: {
+                                    System.out.println("Por favor, escoge una"
+                                            + "opción válida");
+                                }
                             }
                         }
+                    } 
+                    case 3: {
+                        //mierda
+                        break;
                     }
-                } 
-                case 3: {
-                    //mierda
-                    break;
+                    default: {
+                        System.out.println("Por favor, escoge una opción válida");
+                    }
+                           
+
                 }
-                
-                
-                    
-                
-                 }
-    
-            }
+
+                }
+        } catch (SQLException ex) {
+            System.out.println("Error SQL " + ex.getMessage());
+        } catch (Exception ex){
+            System.out.println("Error " + ex.getMessage());
         }
     }
+}
