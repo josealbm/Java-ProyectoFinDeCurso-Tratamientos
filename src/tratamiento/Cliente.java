@@ -97,9 +97,9 @@ public class Cliente {
     
     public void altaCliente(Connection con) throws SQLException, ParseException {
         Scanner sc = new Scanner(System.in);
-        String insert = "INSERT INTO clientes VALUES (nif, nombre, apellidos,"
-                + " cp, teléfono, fecha_nacimiento, fecha_registro)"
-                        + "(?, ?, ?, ?, ?, ?, NULL);";
+        String insert = "INSERT INTO clientes (nif, nombre, apellidos,"
+                + " cp, telefono, fecha_nacimiento, fecha_registro)"
+                        + " VALUES (?, ?, ?, ?, ?, ?, now());";
         PreparedStatement pst = con.prepareStatement(insert);
         System.out.println("Vamos a dar de alta un cliente nuevo");
         System.out.println("Por favor, introduce el documento del cliente");
@@ -113,7 +113,7 @@ public class Cliente {
         System.out.println("Escribe el número de contacto");
         pst.setInt(5, sc.nextInt());
         System.out.println("Escribe la fecha de nacimiento del cliente "
-                + "año/mes/dia");
+                + "año-mes-dia");
         /*Para darle formato a la fecha, primero la introducimos como String
         *para luego transformarla en clase Date. A la hora de introducirlo en 
         *la DB netbeans nos indica que tenemos que hacer cast a java.sql.Date.

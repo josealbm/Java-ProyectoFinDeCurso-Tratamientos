@@ -40,29 +40,38 @@ public class Main {
                         while (!salir2){
                             System.out.println("Escoge una opción");
                             System.out.println("1. Introducir producto nuevo");
-                            System.out.println("2. Introducir albarán");
-                            System.out.println("3. Mostrar producto");
-                            System.out.println("4. Salir");                                       
+                            System.out.println("2. Crear tratamiento hidratante");
+                            System.out.println("3. Crear tratamiento antiedad");
+                            System.out.println("4. Búsqueda de un tratamiento");
+                            System.out.println("5. Salir");
                             int opcion2 = sc.nextInt();
                             switch (opcion2){
                                 case 1: {
-                                    //introducirTratamiento();
+                                    Tratamiento trat = new Tratamiento();
+                                    trat.introducirTratamiento(con);
                                     break;
                                 }
                                 case 2: {
-                                    //introducirAlbaran();
+                                    Hidratante hidr = new Hidratante();
+                                    hidr.introducirTratamiento(con);
                                     break;
                                 }
                                 case 3: {
-                                    //mostrarTratamiento();
+                                    Antiedad anti = new Antiedad();
+                                    anti.introducirTratamiento(con);
+                                    break;
                                 }
                                 case 4: {
+                                    //buscarTratamiento()
+                                    break;
+                                }
+                                case 5: {
                                     salir2=true;
                                     break;
                                     }
                                 default:
-                                    System.out.println("Por favor, escoge una opción"
-                                            + "válida");
+                                    System.out.println("Por favor, escoge una "
+                                            + "opción válida");
                             }
 
                         }
