@@ -95,23 +95,24 @@ public class Antiedad extends Tratamiento{
     public void introducirTratamiento(Connection con) throws SQLException{
         super.introducirTratamiento(con);
         Scanner sc = new Scanner(System.in);
-        String insert = "INSERT INTO hidratante (id, id_tratamiento, "
+        String insert = "INSERT INTO antiedad (id, id_tratamiento, "
                 + "descripcion, zona_aplicacion, stock, precio_ud) "
                 + "VALUES (NULL, ?, ?, ?, ?, ?);";
         PreparedStatement pst = con.prepareStatement(insert);
         System.out.println("Vamos a introducir un tratamiento hidratante");
         System.out.println("Por favor, introduce el ean del tratamiento");
-        pst.setInt(2, sc.nextInt());
+        pst.setInt(1, sc.nextInt());
         System.out.println("Escribe una pequeña descripción");
-        pst.setString(3, sc.nextLine());
+        pst.setString(2, sc.next());
         System.out.println("Ahora la zona de aplicación");
-        pst.setString(4, sc.nextLine());
+        sc.nextLine();
+        pst.setString(3, sc.nextLine());
         System.out.println("¿Cuánto stock ha llegado?");
-        pst.setInt(5, sc.nextInt());
+        pst.setInt(4, sc.nextInt());
         System.out.println("¿Cuál es el PVP?");
-        pst.setDouble(6, sc.nextDouble());
+        pst.setDouble(5, sc.nextDouble());
         pst.execute();
-        System.out.println("El nuevo tratamiento hidratante se ha introducido"
+        System.out.println("El nuevo tratamiento antiedad se ha introducido"
                 + "correctamente");
     }
     

@@ -117,6 +117,10 @@ public class Main {
                         //mierda
                         break;
                     }
+                    case 4: {
+                        salir=true;
+                        break;
+                    }
                     default: {
                         System.out.println("Por favor, escoge una opción válida");
                     }

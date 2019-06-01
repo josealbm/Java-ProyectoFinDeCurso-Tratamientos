@@ -55,7 +55,7 @@ public class Tratamiento{
         System.out.println("Vamos a dar de alta un nuevo producto");
         System.out.println("Escribe el código ean");
         pst.setInt(1, sc.nextInt());
-        System.out.println("Dime el nombre del producto a introducir: ");
+        System.out.println("Dime la marca del producto a introducir: ");
         //si no introducimos esta línea de entrada, la siguiente no funciona
         sc.nextLine(); 
         pst.setString(2, sc.nextLine());

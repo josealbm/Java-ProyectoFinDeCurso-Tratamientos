@@ -97,15 +97,16 @@ public class Hidratante extends Tratamiento{
         PreparedStatement pst = con.prepareStatement(insert);
         System.out.println("Vamos a introducir un tratamiento hidratante");
         System.out.println("Por favor, introduce el ean del tratamiento");
-        pst.setInt(2, sc.nextInt());
+        pst.setInt(1, sc.nextInt());
         System.out.println("Escribe una pequeña descripción");
-        pst.setString(3, sc.nextLine());
+        pst.setString(2, sc.next());
         System.out.println("Ahora la zona de aplicación");
-        pst.setString(4, sc.nextLine());
+        sc.nextLine();
+        pst.setString(3, sc.nextLine());
         System.out.println("¿Cuánto stock ha llegado?");
-        pst.setInt(5, sc.nextInt());
+        pst.setInt(4, sc.nextInt());
         System.out.println("¿Cuál es el PVP?");
-        pst.setDouble(6, sc.nextDouble());
+        pst.setDouble(5, sc.nextDouble());
         pst.execute();
         System.out.println("El nuevo tratamiento hidratante se ha introducido"
                 + "correctamente");
