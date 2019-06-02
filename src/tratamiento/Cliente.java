@@ -95,7 +95,12 @@ public class Cliente {
         this.fecha_registro = fecha_registro;
     }
     
-    public void altaCliente(Connection con) throws SQLException, ParseException {
+    /**
+     * 
+     * @param con
+     * @throws SQLException 
+     */
+    public void altaCliente(Connection con) throws SQLException {
         Scanner sc = new Scanner(System.in);
         String insert = "INSERT INTO clientes (nif, nombre, apellidos,"
                 + " cp, telefono, fecha_nacimiento, fecha_registro)"

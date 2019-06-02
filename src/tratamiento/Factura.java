@@ -8,7 +8,14 @@ package tratamiento;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
+import java.util.Scanner;
+import static tratamiento.Cliente.buscarCliente;
 
 
 
@@ -32,7 +39,7 @@ public class Factura {
 
     public Factura(Integer num_fact, Date fecha, int ean_tratamiento, 
             String nif_cliente, int cantidad, double precio) {
-        this.num_fact = num_fact;
+        this.num_fact = null;
         this.fecha = fecha;
         this.ean_tratamiento = ean_tratamiento;
         this.nif_cliente = nif_cliente;
@@ -86,6 +93,47 @@ public class Factura {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+    
+    /**
+     * 
+     * @param con
+     * @throws SQLException 
+     */
+    public static void realizarVenta(Connection con) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        String select = "INSERT INTO facturas VALUES (NULL, ?, ?, ?, ?, now());";
+        PreparedStatement pst = con.prepareStatement(select);
+        System.out.println("Introduce el dni del cliente");
+        String dni = sc.nextLine();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("Select * from clientes where nif="+dni);
+        if (rs.wasNull()){
+            Cliente cli = new Cliente();
+            cli.altaCliente(con);
+        }else{
+            pst.setString(1, dni);        
+        }
+        System.out.println("Introduce el ean del producto");
+        int ean = sc.nextInt();
+        ResultSet rs2 = st.executeQuery("Select * from tratamiento where "
+                + "ean="+ean);
+        if (rs2.wasNull()){
+            
+        }else{
+            pst.setInt(2, ean);
+        }
+        System.out.println("¿Qué cantidad se lleva el cliente de este producto?");
+        int cantidad = sc.nextInt();
+        if (cantidad>rs2.getInt("stock")){
+            System.out.println("No hay unidades suficientes, las unidades disponibles"
+                    + "son " + rs2.getInt("stock"));
+        }else{
+            pst.setInt(3, cantidad);
+            ResultSet rs3 = st.executeQuery("update tratamiento set "
+                    + "stock=stock-" + cantidad +" where ean="+ean);
+        }
+        pst.setDouble(4, rs2.getDouble("precio_unidad")*cantidad);
     }
     
        
