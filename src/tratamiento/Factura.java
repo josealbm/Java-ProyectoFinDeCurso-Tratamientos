@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.Scanner;
-import static tratamiento.Cliente.buscarCliente;
+
 
 
 
@@ -107,33 +107,58 @@ public class Factura {
         System.out.println("Introduce el dni del cliente");
         String dni = sc.nextLine();
         Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery("Select * from clientes where nif="+dni);
-        if (rs.wasNull()){
+        ResultSet rs = st.executeQuery("Select * from clientes where nif=\""
+                + dni +"\"");
+        if (rs.last()){
+            pst.setString(1, dni);  
+            //Cliente cli = new Cliente();
+            //cli.altaCliente(con);
+        }else{
+            System.out.println("El cliente no existe, vamos a crearlo");
             Cliente cli = new Cliente();
             cli.altaCliente(con);
-        }else{
-            pst.setString(1, dni);        
+            //pst.setString(1, dni);        
         }
         System.out.println("Introduce el ean del producto");
         int ean = sc.nextInt();
         ResultSet rs2 = st.executeQuery("Select * from tratamiento where "
                 + "ean="+ean);
         if (rs2.wasNull()){
-            
+            System.out.println("El producto no se ha encontrado");
+            System.out.println("Indica si se trata de un tratamiento hidratante"
+                    + "o de uno antiedad");
+            String tipo = sc.nextLine();
+            if (tipo.equals("antiedad")){
+                Antiedad anti = new Antiedad();
+                anti.introducirTratamiento(con);
+            }else{
+                Hidratante hidra = new Hidratante();
+                hidra.introducirTratamiento(con);
+            }
+        
         }else{
             pst.setInt(2, ean);
         }
         System.out.println("¿Qué cantidad se lleva el cliente de este producto?");
         int cantidad = sc.nextInt();
-        if (cantidad>rs2.getInt("stock")){
+        while (rs2.next()){
+            while (cantidad>rs2.getInt("stock")){
             System.out.println("No hay unidades suficientes, las unidades disponibles"
                     + "son " + rs2.getInt("stock"));
-        }else{
-            pst.setInt(3, cantidad);
-            ResultSet rs3 = st.executeQuery("update tratamiento set "
+            cantidad = sc.nextInt();
+            }
+        }   
+        pst.setInt(3, cantidad);
+        int result = st.executeUpdate("update tratamiento set "
                     + "stock=stock-" + cantidad +" where ean="+ean);
+        if (result == 1){
+            System.out.println("Se han restado "+ cantidad + "unidades "
+                    + "del stock");
         }
         pst.setDouble(4, rs2.getDouble("precio_unidad")*cantidad);
+        pst.execute();
+        System.out.println("La venta se ha realizado correctamente");
+                
     }
     
        

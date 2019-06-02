@@ -11,6 +11,7 @@ import java.sql.SQLException;
 //import java.text.ParseException;
 import java.util.Scanner;
 import static tratamiento.Cliente.buscarCliente;
+import static tratamiento.Factura.realizarVenta;
 
 /**
  *
@@ -114,7 +115,7 @@ public class Main {
                         }
                     } 
                     case 3: {
-                        //mierda
+                        realizarVenta(con);
                         break;
                     }
                     case 4: {
