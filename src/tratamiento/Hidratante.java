@@ -7,80 +7,117 @@ package tratamiento;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 /**
- *
+ * La clase hidratante es una especialización de la clase tratamiento.
  * @author josealberto
  */
 public class Hidratante extends Tratamiento{
+    private Integer id;
     private String descripcion;
     private String zona_aplicacion;
-    private int Stock;
-    private double precio_ud;
-    
-
+        
+    /**
+     * Constructor vacío
+     */
     public Hidratante() {       
            
     }
-
-    public Hidratante(String descripcion, String zona_aplicacion, int Stock, 
-            double precio_ud) {
+    /**
+     * Constructor de la clase hidratante sólo con sus atributos.
+     * @param descripcion
+     * @param zona_aplicacion 
+     * @param id iniciamos el parámetro id a null ya que será la base de datos
+     * quien nos hará el incremento de este número
+     */
+    public Hidratante(String descripcion, String zona_aplicacion, Integer id) {
+        this.id = null;
         this.descripcion = descripcion;
         this.zona_aplicacion = zona_aplicacion;
-        this.Stock = Stock;
-        this.precio_ud = precio_ud;
+        
     }
 
-    public Hidratante(String descripcion, String zona_aplicacion, int Stock, 
-            double precio_ud, Integer ean, String nombre) {
-        super(ean, nombre);
+    /**
+     * Constructor de la clase hidratante con sus atributos y los atributos
+     * de la clase padre.
+     * @param id Iniciamos a null ya que será la propia base de datos que se
+     *           encargará de asignarle un número autoincremental.
+     * @param descripcion
+     * @param zona_aplicacion
+     * @param ean
+     * @param marca
+     * @param precio
+     * @param stock 
+     */
+    public Hidratante(Integer id, String descripcion, String zona_aplicacion, Integer ean, 
+            String marca, double precio, int stock) {
+        super(ean, marca, precio, stock);
+        this.id = null;
         this.descripcion = descripcion;
         this.zona_aplicacion = zona_aplicacion;
-        this.Stock = Stock;
-        this.precio_ud = precio_ud;
     }
 
+    /**
+     * Getter de la descripción
+     * @return descripcion
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * Setter de la descripción
+     * @param descripcion 
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    /**
+     * Getter de la zona de aplicación del producto.
+     * @return zona_aplicacion
+     */
     public String getZona_aplicacion() {
         return zona_aplicacion;
     }
 
+    /**
+     * Setter de la zona de aplicación
+     * @param zona_aplicacion 
+     */
     public void setZona_aplicacion(String zona_aplicacion) {
         this.zona_aplicacion = zona_aplicacion;
     }
 
-    public int getStock() {
-        return Stock;
-    }
-
-    public void setStock(int Stock) {
-        this.Stock = Stock;
-    }
-
-    public double getPrecio_ud() {
-        return precio_ud;
-    }
-
-    public void setPrecio_ud(double precio_ud) {
-        this.precio_ud = precio_ud;
-    }
+    
    
     /**
      * Método para mostrarnos los atributos del objeto
+     * @param con
+     * @throws java.sql.SQLException
      */
     @Override
-    public void mostrarTratamiento() {
-        super.mostrarTratamiento();
-        
+    public void mostrarTratamiento(Connection con) throws SQLException {
+        super.mostrarTratamiento(con);
+        Statement st = con.createStatement();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Introduce el EAN del tratamiento:");
+        int eantrat = sc.nextInt();
+        ResultSet rs = st.executeQuery("select * from (SELECT * from hidratante "
+                + "union select * from antiedad) as total where "
+                + "id_tratamiento=\""+eantrat+"\"");
+        while (rs.next()){
+            System.out.println("El id del tratamiento es: " 
+                    + rs.getInt("id"));
+            System.out.println("La descripción del tratamiento es: " 
+                    + rs.getString("descripcion"));
+            System.out.println("La zona de aplicación principal de este "
+                    + "tratamiento es " + rs.getString("zona_aplicacion"));
+        }
     }
 
     /**
@@ -92,8 +129,8 @@ public class Hidratante extends Tratamiento{
         super.introducirTratamiento(con);
         Scanner sc = new Scanner(System.in);
         String insert = "INSERT INTO hidratante (id, id_tratamiento, "
-                + "descripcion, zona_aplicacion, stock, precio_ud) "
-                + "VALUES (NULL, ?, ?, ?, ?, ?);";
+                + "descripcion, zona_aplicacion) "
+                + "VALUES (NULL, ?, ?, ?);";
         PreparedStatement pst = con.prepareStatement(insert);
         System.out.println("Vamos a introducir un tratamiento hidratante");
         System.out.println("Por favor, introduce el ean del tratamiento");
@@ -103,10 +140,6 @@ public class Hidratante extends Tratamiento{
         System.out.println("Ahora la zona de aplicación");
         sc.nextLine();
         pst.setString(3, sc.nextLine());
-        System.out.println("¿Cuánto stock ha llegado?");
-        pst.setInt(4, sc.nextInt());
-        System.out.println("¿Cuál es el PVP?");
-        pst.setDouble(5, sc.nextDouble());
         pst.execute();
         System.out.println("El nuevo tratamiento hidratante se ha introducido"
                 + "correctamente");

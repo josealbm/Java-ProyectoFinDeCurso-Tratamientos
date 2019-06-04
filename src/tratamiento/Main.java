@@ -8,13 +8,11 @@ package tratamiento;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.text.ParseException;
 import java.util.Scanner;
-import static tratamiento.Cliente.buscarCliente;
 import static tratamiento.Factura.realizarVenta;
 
 /**
- *
+ * @version 1.0
  * @author josealberto
  */
 public class Main {
@@ -27,13 +25,15 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         boolean salir = false;
         try (Connection con = DriverManager.getConnection
-          ("jdbc:mysql://192.168.0.32:3306/naturness", "alumne", "alualualu")) {
+          ("jdbc:mysql://localhost:3306/naturness", "alumne", "alualualu")) {
             while (!salir){    
                 System.out.println("Escoge una opción");
                 System.out.println("1. Gestión de stock");
                 System.out.println("2. Gestión de clientes");
                 System.out.println("3. Venta");
-                System.out.println("4. Salir");
+                System.out.println("4. Buscar factura por número de factura");
+                System.out.println("5. Buscar factura por DNI");
+                System.out.println("6. Salir");
                 int opcion = sc.nextInt();
                 switch(opcion){
                     case(1):{
@@ -41,32 +41,31 @@ public class Main {
                         while (!salir2){
                             System.out.println("Escoge una opción");
                             System.out.println("1. Introducir producto nuevo");
-                            System.out.println("2. Crear tratamiento hidratante");
-                            System.out.println("3. Crear tratamiento antiedad");
-                            System.out.println("4. Búsqueda de un tratamiento");
-                            System.out.println("5. Salir");
+                            System.out.println("2. Búsqueda de producto");
+                            System.out.println("3. Salir");
                             int opcion2 = sc.nextInt();
                             switch (opcion2){
                                 case 1: {
-                                    Tratamiento trat = new Tratamiento();
-                                    trat.introducirTratamiento(con);
+                                    System.out.println("¿Deseas crear un "
+                                            + "tratamiento antiedad o uno "
+                                            + "hidratante?");
+                                    sc.next();
+                                    String tipo = sc.nextLine();
+                                    if (tipo.equals("antiedad")){
+                                        Antiedad anti = new Antiedad();
+                                        anti.introducirTratamiento(con);
+                                    }else{
+                                        Hidratante hidra = new Hidratante();
+                                        hidra.introducirTratamiento(con);
+                                    }
                                     break;
                                 }
                                 case 2: {
-                                    Hidratante hidr = new Hidratante();
-                                    hidr.introducirTratamiento(con);
+                                    Tratamiento trat = new Tratamiento();
+                                    trat.mostrarTratamiento(con);
                                     break;
                                 }
                                 case 3: {
-                                    Antiedad anti = new Antiedad();
-                                    anti.introducirTratamiento(con);
-                                    break;
-                                }
-                                case 4: {
-                                    //buscarTratamiento()
-                                    break;
-                                }
-                                case 5: {
                                     salir2=true;
                                     break;
                                     }
@@ -84,7 +83,8 @@ public class Main {
                             System.out.println("Escoge una opción");
                             System.out.println("1. Dar de alta cliente");
                             System.out.println("2. Buscar un cliente por DNI");
-                            System.out.println("3. Buscar un cliente por nº de teléfono");
+                            System.out.println("3. Buscar un cliente por nº de "
+                                    + "teléfono");
                             System.out.println("4. Salir");
                             int opcion2 = sc.nextInt();
 
@@ -95,11 +95,11 @@ public class Main {
                                     break;
                                 }
                                 case 2: {
-                                    buscarCliente(con, sc.nextLine());
+                                    Cliente.buscarCliente_dni(con);
                                     break;
                                 }
                                 case 3: {
-                                    buscarCliente(con, sc.nextInt());
+                                    Cliente.buscarCliente_telf(con);
                                     break;
                                       
                                 }
@@ -119,6 +119,15 @@ public class Main {
                         break;
                     }
                     case 4: {
+                        Factura.buscar_fact_num(con);
+                        break;
+                    }
+                    case 5: {
+                        Factura.buscar_fact_dni(con);
+                        break;
+                                
+                    }
+                    case 6: {
                         salir=true;
                         break;
                     }

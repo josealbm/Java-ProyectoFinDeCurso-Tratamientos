@@ -11,18 +11,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
 /**
- *
+ * La clase Cliente es la que se encarga de crear los clientes
  * @author infor15
  */
 public class Cliente {
-    private String DNI;
+    private String nif;
     private String nombre;
     private String apellido;
     private String codigo_postal;
@@ -30,13 +27,27 @@ public class Cliente {
     private Date fecha_nacimiento;
     private Date fecha_registro;
 
+    /**
+     * Constructor vacío
+     */
     public Cliente() {
     }
-
-    public Cliente(String DNI, String nombre, String apellido, 
+    /**
+     * Constructor
+     * @param nif
+     * @param nombre
+     * @param apellido
+     * @param codigo_postal
+     * @param telefono
+     * @param fecha_nacimiento
+     * @param fecha_registro, el parámetro se inicia a null ya que al
+     *        introducirlo en la base de datos se le asigna el valor que le dé
+     *        la función now() (el timestamp de momento en el que se genera)
+     */
+    public Cliente(String nif, String nombre, String apellido, 
             String codigo_postal, int telefono, Date fecha_nacimiento, 
             Date fecha_registro) {
-        this.DNI = DNI;
+        this.nif = nif;
         this.nombre = nombre;
         this.apellido = apellido;
         this.codigo_postal = codigo_postal;
@@ -45,58 +56,120 @@ public class Cliente {
         this.fecha_registro = null;
     }
 
-    
-
-    public String getDNI() {
-        return DNI;
+    /**
+     * Getter del nif
+     * @return nif
+     */
+    public String getNif() {
+        return nif;
     }
 
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
+    /**
+     * Setter del nif
+     * @param nif 
+     */
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
+    /**
+     * Getter del nombre del cliente
+     * @return nombre
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Setter del nombre del cliente
+     * @param nombre 
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
+    /**
+     * Getter del apellido
+     * @return apellido
+     */
+    public String getApellido() {
         return apellido;
     }
 
+    /**
+     * Setter del apellido
+     * @param apellido 
+     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
-     public String getCodigo_postal() {
-        return codigo_postal;
+    /**
+     * Getter del código postal
+     * @return codigo_postal
+     */
+    public String getCodigo_postal() {
+       return codigo_postal;
     }
 
+    /**
+     * Setter del código postal
+     * @param codigo_postal 
+     */
     public void setCodigo_postal(String codigo_postal) {
         this.codigo_postal = codigo_postal;
     }
 
+    /**
+     * Getter del número de teléfono
+     * @return telefono
+     */
     public int getTelefono() {
         return telefono;
     }
 
+    /**
+     * Setter del número de teléfono
+     * @param telefono 
+     */
     public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
+    /**
+     * Getter de la fecha de nacimiento
+     * @return fecha_nacimiento
+     */
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
 
+    /**
+     * Setter de la fecha de nacimiento
+     * @param fecha_nacimiento 
+     */
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+    
+
+    /**
+     * Getter de la fecha de registro
+     * @return fecha_registro
+     */
     public Date getFecha_registro() {
         return fecha_registro;
     }
 
+    /**
+     * Setter de la fecha de registro
+     * @param fecha_registro 
+     */
     public void setFecha_registro(Date fecha_registro) {
         this.fecha_registro = fecha_registro;
     }
     
     /**
-     * 
+     * Método para crear un nuevo cliente y volcarlo en la Base de Datos.
      * @param con
      * @throws SQLException 
      */
@@ -117,27 +190,24 @@ public class Cliente {
         pst.setString(4, sc.nextLine());
         System.out.println("Escribe el número de contacto");
         pst.setInt(5, sc.nextInt());
-        System.out.println("Escribe la fecha de nacimiento del cliente "
-                + "año-mes-dia");
-        /*Para darle formato a la fecha, primero la introducimos como String
-        *para luego transformarla en clase Date. A la hora de introducirlo en 
-        *la DB netbeans nos indica que tenemos que hacer cast a java.sql.Date.
-        */
+        System.out.println("Escribe la fecha de nacimiento del cliente");
         sc.nextLine();
-        //String data = sc.nextLine();
-        //DateFormat format = new SimpleDateFormat("YYYY/MM/DD");
-        //Date fecha = format.parse(data);
         pst.setString(6, sc.nextLine());
         pst.execute();
-        System.out.println("El nuevo cliente ha sido dado de alta correctamente");
-                  
-        
+        System.out.println("El nuevo cliente ha sido dado de alta correctamente");             
     }
-    public static void buscarCliente(Connection con, String nif) throws SQLException {
+    
+    /**
+     * Método de búsqueda de clientes dentro de la base de datos a través del 
+ número de nif.
+     * @param con
+     * @throws SQLException 
+     */
+    public static void buscarCliente_dni(Connection con) throws SQLException {
         Statement st = con.createStatement();
         Scanner sc = new Scanner(System.in);
         System.out.print("Introduce el DNI del cliente para poder buscarlo:");
-        nif = sc.nextLine();
+        String nif = sc.nextLine();
         ResultSet rs = st.executeQuery("select * from clientes where nif=\""+nif+"\"");
         while (rs.next()){
             System.out.println("DNI del cliente: " + rs.getString("nif"));
@@ -150,11 +220,17 @@ public class Cliente {
         }
     }
     
-    public static void buscarCliente(Connection con, int telefono) throws SQLException {
+    /**
+     * Método de búsqueda de clientes en la base de datos a través de su número 
+     * de teléfono.
+     * @param con
+     * @throws SQLException 
+     */
+    public static void buscarCliente_telf(Connection con) throws SQLException {
         Statement st = con.createStatement();
         Scanner sc = new Scanner(System.in);
         System.out.print("Introduce el teléfono del cliente para poder buscarlo:");
-        telefono = sc.nextInt();
+        int telefono = sc.nextInt();
         ResultSet rs = st.executeQuery
         ("select * from clientes where telefono="+telefono);
         while (rs.next()){

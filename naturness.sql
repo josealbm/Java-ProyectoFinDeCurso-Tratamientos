@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-06-2019 a las 00:47:17
+-- Tiempo de generación: 02-06-2019 a las 21:38:03
 -- Versión del servidor: 10.1.38-MariaDB-0+deb9u1
 -- Versión de PHP: 7.0.33-0+deb9u3
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `naturness`
 --
-CREATE DATABASE IF NOT EXISTS `naturness` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `naturness`;
 
 -- --------------------------------------------------------
 
@@ -32,20 +30,18 @@ CREATE TABLE `antiedad` (
   `id` int(10) NOT NULL,
   `id_tratamiento` int(10) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
-  `zona_aplicacion` varchar(11) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `precio_ud` float DEFAULT NULL
+  `zona_aplicacion` varchar(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `antiedad`
 --
 
-INSERT INTO `antiedad` (`id`, `id_tratamiento`, `descripcion`, `zona_aplicacion`, `stock`, `precio_ud`) VALUES
-(1, 1101, 'Hidratante antiedad con ácido hyalurónico', 'rostro', 10, 49),
-(2, 1102, 'Contorno de ojos hidratante antiedad con ácido hyalurónico', 'ojos', 10, 39),
-(3, 1501, 'Gel hidratante y regenerante con menta y aloe', 'piernas ', 10, 5.95),
-(4, 1502, 'Crema antiedad y regeneradora de piel con aceite de argán y aguacate', 'cuello', 10, 59);
+INSERT INTO `antiedad` (`id`, `id_tratamiento`, `descripcion`, `zona_aplicacion`) VALUES
+(1, 1101, 'Hidratante antiedad con ácido hyalurónico', 'rostro'),
+(2, 1102, 'Contorno de ojos hidratante antiedad con ácido hyalurónico', 'ojos'),
+(3, 1501, 'Gel hidratante y regenerante con menta y aloe', 'piernas '),
+(4, 1502, 'Crema antiedad y regeneradora de piel con aceite de argán y aguacate', 'cuello');
 
 -- --------------------------------------------------------
 
@@ -111,23 +107,21 @@ CREATE TABLE `hidratante` (
   `id` int(10) NOT NULL,
   `id_tratamiento` int(10) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
-  `zona_aplicacion` varchar(11) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `precio_ud` float DEFAULT NULL
+  `zona_aplicacion` varchar(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `hidratante`
 --
 
-INSERT INTO `hidratante` (`id`, `id_tratamiento`, `descripcion`, `zona_aplicacion`, `stock`, `precio_ud`) VALUES
-(1, 1201, 'Hidratante  con rosa mosqueta', 'rostro', 10, 39),
-(2, 1202, 'Contorno de ojos hidratante con rosa mosqueta', 'ojos', 10, 29),
-(3, 1301, 'Leche corporal de coco', 'cuerpo', 10, 19),
-(4, 1302, 'Leche corporal de aloe vera', 'cuerpo', 10, 19),
-(5, 1303, 'Aceite corporal de almendras y manteca de karité', 'cuerpo', 10, 23.95),
-(6, 1401, 'Emulsión de manos de coco', 'manos', 10, 4.95),
-(7, 1402, 'Crema hidratante de manos de aloe vera', 'manos', 10, 4.95);
+INSERT INTO `hidratante` (`id`, `id_tratamiento`, `descripcion`, `zona_aplicacion`) VALUES
+(1, 1201, 'Hidratante  con rosa mosqueta', 'rostro'),
+(2, 1202, 'Contorno de ojos hidratante con rosa mosqueta', 'ojos'),
+(3, 1301, 'Leche corporal de coco', 'cuerpo'),
+(4, 1302, 'Leche corporal de aloe vera', 'cuerpo'),
+(5, 1303, 'Aceite corporal de almendras y manteca de karité', 'cuerpo'),
+(6, 1401, 'Emulsión de manos de coco', 'manos'),
+(7, 1402, 'Crema hidratante de manos de aloe vera', 'manos');
 
 -- --------------------------------------------------------
 
@@ -137,26 +131,27 @@ INSERT INTO `hidratante` (`id`, `id_tratamiento`, `descripcion`, `zona_aplicacio
 
 CREATE TABLE `tratamiento` (
   `ean` int(5) NOT NULL,
-  `marca` varchar(20) DEFAULT NULL
+  `marca` varchar(20) DEFAULT NULL,
+  `stock` int(3) NOT NULL,
+  `precio_unidad` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `tratamiento`
 --
 
-INSERT INTO `tratamiento` (`ean`, `marca`) VALUES
-(1101, 'Hya'),
-(1102, 'Hya Eyes'),
-(1201, 'Rose'),
-(1202, 'Rose Eyes'),
-(1234, 'Marca'),
-(1301, 'Coco balm'),
-(1302, 'Aloe balm'),
-(1303, 'Body oil'),
-(1401, 'Handy'),
-(1402, 'Handy'),
-(1501, 'Refresh gel'),
-(1502, 'La viellité');
+INSERT INTO `tratamiento` (`ean`, `marca`, `stock`, `precio_unidad`) VALUES
+(1101, 'Hya', 10, 49),
+(1102, 'Hya Eyes', 10, 39),
+(1201, 'Rose', 10, 39),
+(1202, 'Rose Eyes', 10, 29),
+(1301, 'Coco balm', 10, 19),
+(1302, 'Aloe balm', 10, 19),
+(1303, 'Body oil', 10, 23.95),
+(1401, 'Handy', 10, 4.95),
+(1402, 'Handy', 10, 4.95),
+(1501, 'Refresh gel', 10, 5.95),
+(1502, 'La viellité', 10, 59);
 
 --
 -- Índices para tablas volcadas
