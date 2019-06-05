@@ -208,15 +208,19 @@ public class Cliente {
         Scanner sc = new Scanner(System.in);
         System.out.print("Introduce el DNI del cliente para poder buscarlo:");
         String nif = sc.nextLine();
-        ResultSet rs = st.executeQuery("select * from clientes where nif=\""+nif+"\"");
+        ResultSet rs = st.executeQuery("select * from clientes where nif="
+                + "\""+nif+"\"");
         while (rs.next()){
             System.out.println("DNI del cliente: " + rs.getString("nif"));
             System.out.println("Nombre del cliente: " + rs.getString("nombre"));
-            System.out.println("Apellido del cliente: " + rs.getString("apellidos"));
+            System.out.println("Apellido del cliente: " + rs.getString
+        ("apellidos"));
             System.out.println("Código Postal: " + rs.getString("cp"));
             System.out.println("Teléfono: " + rs.getInt("telefono"));
-            System.out.println("Fecha de nacimiento: " + rs.getString("fecha_nacimiento"));
-            System.out.println("Fecha de registro: "+ rs.getString("fecha_registro"));
+            System.out.println("Fecha de nacimiento: " + rs.getString
+        ("fecha_nacimiento"));
+            System.out.println("Fecha de registro: "+ rs.getString
+        ("fecha_registro"));
         }
     }
     

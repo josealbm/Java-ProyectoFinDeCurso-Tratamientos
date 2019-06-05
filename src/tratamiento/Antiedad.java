@@ -138,7 +138,7 @@ public class Antiedad extends Tratamiento{
                 + "descripcion, zona_aplicacion3) "
                 + "VALUES (NULL, ?, ?, ?);";
         PreparedStatement pst = con.prepareStatement(insert);
-        System.out.println("Vamos a introducir un tratamiento hidratante");
+        System.out.println("Vamos a introducir un tratamiento antiedad");
         System.out.println("Por favor, introduce el ean del tratamiento");
         pst.setInt(1, sc.nextInt());
         System.out.println("Escribe una pequeña descripción");
