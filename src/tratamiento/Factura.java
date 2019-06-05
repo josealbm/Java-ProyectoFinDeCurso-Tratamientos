@@ -33,6 +33,13 @@ public class Factura {
     private String nif_cliente;
     private int cantidad;
     private double precio;
+    private static final String QUERY_FACTURA = "SELECT f.num_fact, "
+            + "f.nif_cliente, c.nombre, c.apellidos, f.ean_tratamiento, t.marca,"
+            + " tot.descripcion, f.cantidad, f.precio, f.fecha_compra FROM "
+            + "facturas f, clientes c, tratamiento t, (SELECT * from hidratante"
+            + " union select * from antiedad) as tot where c.nif=f.nif_cliente "
+                + "and tot.id_tratamiento=f.ean_tratamiento and "
+                + "f.ean_tratamiento=t.ean ORDER BY num_fact DESC LIMIT 1";
 
     /**
      * Constructor vacío
@@ -254,14 +261,7 @@ public class Factura {
     * @throws SQLException 
     */
     public static void generar_factura(Connection con) throws SQLException {
-	PreparedStatement pst = con.prepareStatement
-        ("SELECT f.num_fact, f.nif_cliente, c.nombre, c.apellidos, "
-                + "f.ean_tratamiento, t.marca, tot.descripcion, f.cantidad, "
-                + "f.precio, f.fecha_compra FROM facturas f, clientes c, "
-                + "tratamiento t, (SELECT * from hidratante union "
-                + "select * from antiedad) as tot where c.nif=f.nif_cliente "
-                + "and tot.id_tratamiento=f.ean_tratamiento and "
-                + "f.ean_tratamiento=t.ean ORDER BY num_fact DESC LIMIT 1 ");
+	PreparedStatement pst = con.prepareStatement(QUERY_FACTURA);
 	ResultSet rs = pst.executeQuery();
 	try(FileWriter txt = new FileWriter("/home/josealberto/Escriptori/"
                 + "factura.txt")){
